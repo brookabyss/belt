@@ -1,0 +1,34 @@
+
+<h1><a [routerLink]="['/dashboard']">Bucket List</a> | <a [routerLink]="['/']">Home</a> <a href="/user/logout">Logout</a></h1>
+
+<div *ngFor="let error of error_messages"><p>error</p></div>
+
+
+
+
+
+
+<h1>Welcome {{user.name}} !</h1>
+<form #bucketForm="ngForm" novalidate (submit)="onSubmit()">
+      <input type="text" name="input_title" required minlength="5"  [(ngModel)]="bucket.title" #input_title="ngModel">
+      <p *ngIf="!input_title.valid&&input_title.touched">The title has to be at least 5 characters in length</p>
+      <input type="text" name="input_description" required  [(ngModel)]="bucket.description" #input_description="ngModel">
+      <p *ngIf="!input_description.valid&&input_description.touched">The description has to be at least 5 characters in length</p>
+
+      <select name="users" [(ngModel)]="tagged_user" >
+        
+        <option *ngFor="let u of users" value={{u._id}}>{{u.name}}</option>
+      </select>
+      <input type="submit" [disabled]="!bucketForm.valid">
+</form>
+
+
+      <h1>Before I die I want to :</h1>
+      <form >
+        <p *ngFor="let bucket of buckets " >
+        <input type="checkbox" [disabled]="bucket._creator!=user._id&& !bucket._tagged.includes(user._id)" [checked]="bucket.status" (click)="changeStatus(bucket._id)"> {{bucket._creator | getName : users}} says {{bucket.title}}-{{bucket.description}}-{{bucket.createdAt|date:'medium'}} 
+       </p>
+       
+      </form>
+
+      <p *ngFor="let person of users | filterUser: user " ><a [routerLink]="['/user',person._id]">{{person.name}}</a></p>

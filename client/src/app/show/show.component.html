@@ -1,0 +1,19 @@
+<h1><a [routerLink]="['/dashboard']">Bucket List</a> | <a [routerLink]="['/']">Home</a> <a href="/user/logout">Logout</a></h1>
+
+<div *ngFor="let error of error_messages"><p>{{error}}</p></div>
+
+<h1>KB's Bucket List</h1>
+<h2>Done</h2>
+<div>
+<form >
+<p *ngFor="let bucket of buckets | check :true " >
+<input type="checkbox" [disabled]="bucket._creator!=user._id" [checked]="bucket.status"> {{bucket._creator| getName: users}}{{bucket.title}}-{{bucket.description}}-{{bucket.createdAt|date:'medium'}}</p>
+</form>
+<h2>Pending</h2>
+<form >
+
+<p *ngFor="let bucket of buckets | check : false "  >
+  
+<input type="checkbox" [disabled]="bucket._creator!=user._id" [checked]="bucket.status"> {{bucket.title}}-{{bucket.description}}-{{bucket.createdAt|date:'medium'}}</p>
+</form>
+</div>
